@@ -1,0 +1,50 @@
+mul - https://i.imgur.com/pFyIi15.png
+div - https://i.imgur.com/XbYOSn3.png 
+plusminusoth - https://i.imgur.com/Eh5Tj09.png 
+signed transfer - https://i.imgur.com/Zb6Jn9j.png 
+unsigned transfer - https://i.imgur.com/knbKLql.png 
+korobovred - https://i.imgur.com/mymwmBG.jpg 
+unsignedChar_l1 - https://i.imgur.com/2bynDQn.png
+signedChar_l1 - https://i.imgur.com/RkohpTy.png
+unsignedInt_l1 - https://i.imgur.com/HhRBzeX.png
+signedInt_l1 - https://i.imgur.com/DfAFVGn.png
+signedInt_l2 - https://i.imgur.com/yKotusG.png
+unsignedInt_l2 - https://i.imgur.com/NSfr7j7.png
+
+1_1 https://i.imgur.com/dhPQ3CS.jpg
+1_2 https://i.imgur.com/VDdviLX.jpg
+2_1 https://i.imgur.com/sMIMCQo.png
+2_2 https://i.imgur.com/Tsds5r9.png
+3_1 https://i.imgur.com/nTXEeCG.png
+3_2 https://i.imgur.com/1JUAoDt.png
+3_3 https://i.imgur.com/Iqf6oSt.png
+3_4 https://i.imgur.com/O68dGAw.png
+3_5 https://i.imgur.com/m7XRvkR.png
+4_1 https://i.imgur.com/d1Svk59.png
+4_2 https://i.imgur.com/nGhKJnR.png
+5_1 https://i.imgur.com/qJk2rbx.png
+5_2 https://i.imgur.com/XN1rKo1.png
+6_1 https://i.imgur.com/u1MjJMP.png
+6_2 https://i.imgur.com/Ye943DB.png
+7 - https://i.imgur.com/IxJQ9mV.png
+8_1 https://i.imgur.com/5Bmwgdu.png
+8_2 https://i.imgur.com/bgpzB1E.png
+9_1 https://i.imgur.com/f6trWaq.png
+9_2 https://i.imgur.com/jg5B3WZ.png
+10_1 https://i.imgur.com/gQv5TsX.png
+10_2 https://i.imgur.com/58OEnpX.png
+11_1 https://i.imgur.com/liAgjcR.png
+11_2 https://i.imgur.com/bSNe780.png
+11_3 https://i.imgur.com/U8OxgDU.png
+12_1 https://i.imgur.com/ReX2XCT.png
+12_2 https://i.imgur.com/CcS4Rah.png
+13_1 https://i.imgur.com/vN0NPFO.png
+13_2 https://i.imgur.com/mrMD1dd.png
+13_3 https://i.imgur.com/eZdeUjR.png
+14_1 https://i.imgur.com/QSaAfUj.png
+14_2 https://i.imgur.com/2yjgHYD.png
+15 - https://i.imgur.com/a2ApOau.png
+16_1 https://i.imgur.com/jCO1Z01.png
+16_2 https://i.imgur.com/0ot3uQm.png
+16_3 https://i.imgur.com/NdDywo3.png
+questionList - https://i.imgur.com/hADvY57.png
