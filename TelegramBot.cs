@@ -1,26 +1,27 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
+using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
+using System.Timers;
 using Telegram.Bot;
 using Telegram.Bot.Args;
 using Telegram.Bot.Types;
 using Telegram.Bot.Types.Enums;
 using Telegram.Bot.Types.InlineKeyboardButtons;
 using Telegram.Bot.Types.ReplyMarkups;
+using System.Diagnostics;
 
 namespace TelegramBot
 {
     class MyBot
     {
         #region Variables
-        private static readonly TelegramBotClient botClient = new TelegramBotClient("token");
+        private static readonly TelegramBotClient botClient = new TelegramBotClient("TOKEN");
 
-        private static Dictionary<long, String> userChoices = new Dictionary<long, string>();
-
-        private static List<FileToSend> mainImgs = new List<FileToSend>();
-        private static List<List<FileToSend>> questionImgs = new List<List<FileToSend>>();
-        
+        private static Dictionary<long, string> userChoices;
+        public static List<FileToSend> mainImgs = new List<FileToSend>();
+        public static List<List<FileToSend>> questionImgs = new List<List<FileToSend>>();
         #endregion
 
         #region Keyboards
@@ -174,7 +175,17 @@ namespace TelegramBot
 
         public static void Main(string[] args)
         {
-            LoadFiles();
+            System.Timers.Timer restartTimer = new System.Timers.Timer();
+            restartTimer.Interval = 86400000;
+            restartTimer.Elapsed += new ElapsedEventHandler(restartTimer_Tick);
+            restartTimer.Start();
+            Console.WriteLine($"Bot restarts every {restartTimer.Interval/3600000} hours.");
+
+            FileSystem.LoadFiles();
+            userChoices = FileSystem.LoadUserChoices();
+
+            Thread.Sleep(100);
+
             var me = botClient.GetMeAsync().Result;
             Console.Title = me.Username;
 
@@ -196,6 +207,14 @@ namespace TelegramBot
 
             if (message == null || message.Type != MessageType.TextMessage) return;
 
+            if (!FileSystem.ignoreMessagesLog.Contains(message.Text.Trim()))
+            {
+                FileSystem.GetLogs(message.Date.ToShortDateString() + " "
+                                 + message.Date.ToShortTimeString(),
+                                   message.From.Username,
+                                   message.Text);
+            }
+
             if (userChoices.ContainsKey(message.From.Id))
             {
 
@@ -212,6 +231,7 @@ namespace TelegramBot
 
                     await Task.Delay(200);
 
+                    userChoices[message.From.Id] = "";
 
                     await botClient.SendPhotoAsync(
                     message.Chat.Id,
@@ -388,7 +408,7 @@ namespace TelegramBot
                         {
                             ticket = Convert.ToInt32(message.Text.Trim());
                         }
-                        catch (Exception e)
+                        catch (Exception)
                         {
                             await botClient.SendChatActionAsync(message.Chat.Id, ChatAction.Typing);
                             await Task.Delay(200);
@@ -498,40 +518,21 @@ namespace TelegramBot
 
         }
 
-        private static void LoadFiles()
+        static void restartTimer_Tick(Object sender, EventArgs e)
         {
-            string temp = "";
-            int tempCount = -1;
-            String[] tempArray;
-
-            StreamReader streamReader;
-
-            Console.WriteLine("Loading files...");
-
-            using (streamReader = new StreamReader("mainImgs.txt"))
+            Process[] localProccesses = Process.GetProcesses();
+            try
             {
-                while (!streamReader.EndOfStream)
-                {
-                    temp = streamReader.ReadLine();
-                    mainImgs.Add(new FileToSend(temp));
-                }
+                FileSystem.SaveUserChoices();
+                Process targetProcess = localProccesses
+                                        .First(x => x.ProcessName == "TelegramBot");
+                Process.Start("TelegramBot.exe");
+                targetProcess.Kill();
             }
-
-            using (streamReader = new StreamReader("questionImgs.txt"))
+            catch
             {
-                while (!streamReader.EndOfStream)
-                {
-                    tempCount++;
-                    questionImgs.Add(new List<FileToSend>());
-                    tempArray = streamReader.ReadLine().Split(' ');
-                    for(int t = 0; t < tempArray.Length; t++)
-                    {
-                        questionImgs[tempCount].Add(new FileToSend(tempArray[t]));
-                    }
-                }
+                Console.WriteLine("Restart failed!");
             }
-
-            Console.WriteLine("All files successful loaded!");
         }
     }
 }
