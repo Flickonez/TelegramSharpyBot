@@ -117,8 +117,8 @@ namespace TelegramBot
             Keyboard = new[] {
                                                 new[]
                                                 {
-                                                    new KeyboardButton("Лаба \U00000031"),
-                                                    new KeyboardButton("Лаба \U00000032")
+                                                    new KeyboardButton("Лаб. № 1"),
+                                                    new KeyboardButton("Лаб. № 2")
                                                 },
                                                 new[]
                                                 {
@@ -171,6 +171,26 @@ namespace TelegramBot
                                             },
             ResizeKeyboard = true
         };
+
+        static InlineKeyboardMarkup typesOfDataKeyboard = new InlineKeyboardMarkup(new[]
+        {
+                        new []
+                        {
+                            InlineKeyboardButton.WithCallbackData("Регистры", "registers"),
+                        },
+                        new []
+                        {
+                            InlineKeyboardButton.WithCallbackData("Директивы", "directives"),
+                        },
+                });
+
+        static InlineKeyboardMarkup conversationCommandsKeyboard = new InlineKeyboardMarkup(new[]
+{
+                        new []
+                        {
+                            InlineKeyboardButton.WithCallbackData("Подробнее", "goFurtherConversation"),
+                        },
+                });
         #endregion
 
         public static void Main(string[] args)
@@ -236,11 +256,11 @@ namespace TelegramBot
                     await botClient.SendPhotoAsync(
                     message.Chat.Id,
                     mainImgs[0],
-                    "HI THERE"
+                    "Привет! Я помогу тебе сдать Assемблер."
                     );
                     await botClient.SendTextMessageAsync(
                     message.Chat.Id,
-                    "CHOOSE YOUR DESTINY",
+                    "Выбирай раздел",
                     ParseMode.Default,
                     false,
                     false,
@@ -265,27 +285,29 @@ namespace TelegramBot
 
                 case "типы данных":
                     await botClient.SendTextMessageAsync(message.Chat.Id, "*SIGNED BYTE*  [-128..127]" +
-                                                                  "\n*UNSIGNED BYTE*  [0..255]" +
-                                                                  "\n*SIGNED WORD*  [-32768..32767]" +
-                                                                  "\n*UNSIGNED WORD* [0..65535]" +
-                                                                  "\n*SIGNED DWORD*  [-2147483648..2147483647]" +
-                                                                  "\n*UNSIGNED DWORD*  [0..4294967295]",
-                                                                  parseMode: ParseMode.Markdown);
+                                                                  "\n\n*UNSIGNED BYTE*  [0..255]" +
+                                                                  "\n\n*SIGNED WORD*  [-32768..32767]" +
+                                                                  "\n\n*UNSIGNED WORD* [0..65535]" +
+                                                                  "\n\n*SIGNED DWORD*  [-2147483648..2147483647]" +
+                                                                  "\n\n*UNSIGNED DWORD*  [0..4294967295]",
+                                                                  parseMode: ParseMode.Markdown,
+                                                                  replyMarkup: typesOfDataKeyboard);
 
                     break;
 
 
                 case "команды преобразования":
                     await botClient.SendTextMessageAsync(message.Chat.Id, "*CBW* - Преобразование байта в слово ( AL -> AX )"
-                                                                 + "\n*CWD* - Преобразовать слово в двойное слово(AX->DX:AX)"
-                                                                 + "\n*CWDE* - Преобразовать AX в EAX"
-                                                                 + "\n*CDQ* - Преобразовать EAX в EDX: EAX",
-                                                                 parseMode: ParseMode.Markdown);
+                                                                 + "\n\n*CWD* - Преобразовать слово в двойное слово(AX->DX:AX)"
+                                                                 + "\n\n*CWDE* - Преобразовать AX в EAX"
+                                                                 + "\n\n*CDQ* - Преобразовать EAX в EDX: EAX",
+                                                                 parseMode: ParseMode.Markdown,
+                                                                 replyMarkup: conversationCommandsKeyboard);
                     break;
                 case "команды передачи управления":
                     await botClient.SendTextMessageAsync(message.Chat.Id,
                     "*JMP* MARK - переходит на метку MARK\n" +
-                    "*CMP* A, B - сравнивает A и B",
+                    "\n*CMP* A, B - сравнивает A и B",
                     parseMode: ParseMode.Markdown,
                     replyMarkup: typesCommandsTransferManaging);
                     break;
@@ -302,24 +324,24 @@ namespace TelegramBot
                     break;
                 case "\U0000274C умножение":
                     await botClient.SendTextMessageAsync(message.Chat.Id, "*MUL/IMUL K*\n"
-                                                                 + "Если K - байт, второй сомножитель в AL, результат в AX\n"
-                                                                 + "Если K - слово, второй сомножитель в AX, результат в DX: AX\n"
-                                                                 + "Если K - двойное слово, второй сомножитель в EAX, результат в EDX: EAX",
+                                                                 + "\nЕсли K - байт, второй сомножитель в AL, результат в AX\n"
+                                                                 + "\nЕсли K - слово, второй сомножитель в AX, результат в DX: AX\n"
+                                                                 + "\nЕсли K - двойное слово, второй сомножитель в EAX, результат в EDX: EAX",
                                                                  parseMode: ParseMode.Markdown,
                                                                  replyMarkup: arithmMulExamplesKeybord);
                     break;
                 case "\U00002797 деление":
                     await botClient.SendTextMessageAsync(message.Chat.Id, "*DIV/IDIV K*\n"
-                                                                 + "Если K - байт, делимое в AX, результат: частное в AL, остаток в AH\n"
-                                                                 + "Если K - слово, делимое в DX:AX, результат: частное в AX, остаток в DX\n"
-                                                                 + "Если K - двойное слово, делимое в EDX:EAX, результат: частное в EAX, остаток в EDX",
+                                                                 + "\nЕсли K - байт, делимое в AX, результат: частное в AL, остаток в AH\n"
+                                                                 + "\nЕсли K - слово, делимое в DX:AX, результат: частное в AX, остаток в DX\n"
+                                                                 + "\nЕсли K - двойное слово, делимое в EDX:EAX, результат: частное в EAX, остаток в EDX",
                                                                  parseMode: ParseMode.Markdown,
                                                                  replyMarkup: arithmDivExamplesKeybord);
                     break;
                 case "\U00002795 \U00002796 сложение/вычитание":
                     await botClient.SendTextMessageAsync(message.Chat.Id,
                                                          "*ADD A,B* - прибавляет B к A\n" +
-                                                         "*SUB A,B* - вычитает B из A",
+                                                         "\n*SUB A,B* - вычитает B из A",
                                                          parseMode: ParseMode.Markdown,
                                                          replyMarkup: arithmPlusMinusExamplesKeybord);
                     break;
@@ -363,21 +385,21 @@ namespace TelegramBot
                         await botClient.SendPhotoAsync(
                         message.Chat.Id,
                         mainImgs[1],
-                        "CHOOSE YOUR DESTINY",
+                        "Выберите раздел",
                         false,
                         0,
                         mainKeyboard);
                         userChoices[message.From.Id] = "";
                     }
                     break;
-                case "лаба \U00000031":
+                case "лаб. № 1":
                     await botClient.SendTextMessageAsync(
                     message.Chat.Id,
                     "Тип данных?",
                     replyMarkup: lab1ExamplesKeyboard
                     );
                     break;
-                case "лаба \U00000032":
+                case "лаб. № 2":
                     await botClient.SendTextMessageAsync(
                     message.Chat.Id,
                     "Тип данных?",
@@ -512,6 +534,24 @@ namespace TelegramBot
                          mainImgs[12]
                          );
                     break;
+                case "registers":
+                    await botClient.SendPhotoAsync(
+                         callbackQuery.Message.Chat.Id,
+                         mainImgs[14]
+                         );
+                    break;
+                case "directives":
+                    await botClient.SendPhotoAsync(
+                         callbackQuery.Message.Chat.Id,
+                         mainImgs[15]
+                         );
+                    break;
+                case "goFurtherConversation":
+                    await botClient.SendPhotoAsync(
+                         callbackQuery.Message.Chat.Id,
+                         mainImgs[16]
+                         );
+                    break;
                 default:
                     break;
             }
@@ -524,6 +564,7 @@ namespace TelegramBot
             try
             {
                 FileSystem.SaveUserChoices();
+                FileSystem.logWriter.Flush();
                 Process targetProcess = localProccesses
                                         .First(x => x.ProcessName == "TelegramBot");
                 Process.Start("TelegramBot.exe");
