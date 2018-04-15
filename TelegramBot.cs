@@ -18,8 +18,9 @@ namespace TelegramBot
     {
         #region Variables
         private static readonly TelegramBotClient botClient = new TelegramBotClient("TOKEN");
-
         private static Dictionary<long, string> userChoices;
+        private static System.Timers.Timer restartTimer = new System.Timers.Timer();
+
         public static List<FileToSend> mainImgs = new List<FileToSend>();
         public static List<List<FileToSend>> questionImgs = new List<List<FileToSend>>();
         #endregion
@@ -195,7 +196,6 @@ namespace TelegramBot
 
         public static void Main(string[] args)
         {
-            System.Timers.Timer restartTimer = new System.Timers.Timer();
             restartTimer.Interval = 86400000;
             restartTimer.Elapsed += new ElapsedEventHandler(restartTimer_Tick);
             restartTimer.Start();
@@ -572,7 +572,9 @@ namespace TelegramBot
             }
             catch
             {
-                Console.WriteLine("Restart failed!");
+                Console.WriteLine("Restart failed! Next attempt for 1 hour..");
+                restartTimer.Interval = 3600000;
+                restartTimer.Start();
             }
         }
     }
